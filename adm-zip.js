@@ -424,7 +424,7 @@ module.exports = function (/*String*/input) {
 		 * @param overwrite If the file already exists at the target path, the file will be overwriten if this is true.
 		 *                  Default is FALSE
 		 */
-		extractAllTo: function (/*String*/targetPath, /*Boolean*/overwrite) {
+		extractAllTo: function (/*String*/targetPath, /*Boolean*/overwrite, /*function*/callback) {
 			overwrite = overwrite || false;
 			if (!_zip) {
 				throw Utils.Errors.NO_ZIP;
@@ -444,6 +444,9 @@ module.exports = function (/*String*/input) {
 					fs.utimesSync(entryName, entry.header.time, entry.header.time)
 				} catch (err) {
 					throw Utils.Errors.CANT_EXTRACT_FILE;
+				}
+				if(callback){
+					callback(entryName);
 				}
 			})
 		},
